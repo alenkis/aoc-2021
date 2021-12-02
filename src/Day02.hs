@@ -1,34 +1,40 @@
 module Day02 where
 
-calculatePosition :: [String] -> (Int, Int) -> (Int, Int)
-calculatePosition input acc = foldl parseP acc input
-  where
-    parseP (horizontal, vertical) s = case words s of
-      ["forward", n] -> (horizontal + read n, vertical)
-      ["up", n] -> (horizontal, vertical - read n)
-      ["down", n] -> (horizontal, vertical + read n)
-      _ -> (horizontal, vertical)
+data Position = Position
+  { positionHorizontal :: Int,
+    positionDepth :: Int,
+    positionAim :: Int
+  }
+  deriving (Show)
 
-solve1 :: (Int, Int) -> Int
-solve1 (h, v) = h * v
+instance Semigroup Position where
+  Position h1 d1 a1 <> Position h2 d2 a2 =
+    Position (h1 + h2) (d1 + d2 + a1 * h2) (a1 + a2)
 
-calculatePosition2 :: [String] -> (Int, Int, Int) -> (Int, Int, Int)
-calculatePosition2 input acc = foldl parseP acc input
-  where
-    parseP (horizontal, vertical, aim) s = case words s of
-      ["forward", n] -> (horizontal + read n, f aim n, aim)
-        where
-          f 0 _ = vertical
-          f x n = vertical + read n * aim
-      ["down", n] -> (horizontal, vertical, aim + read n)
-      ["up", n] -> (horizontal, vertical, aim - read n)
-      _ -> (horizontal, vertical, aim)
+instance Monoid Position where
+  mempty = Position 0 0 0
 
-solve2 :: (Int, Int, Int) -> Int
-solve2 (h, v, _) = h * v
+commandToPosition :: String -> Position
+commandToPosition s = case words s of
+  ["forward", n] -> Position (read n) 0 0
+  ["up", n] -> Position 0 (negate $ read n) 0
+  ["down", n] -> Position 0 (read n) 0
+  _ -> Position 0 0 0
+
+commandToPosition' :: String -> Position
+commandToPosition' s = case words s of
+  ["forward", n] -> Position (read n) 0 0
+  ["up", n] -> Position 0 0 (negate $ read n)
+  ["down", n] -> Position 0 0 (read n)
+  _ -> Position 0 0 0
+
+solve :: Position -> Int
+solve (Position h d _) = h * d
 
 day02 :: IO ()
 day02 = do
   content <- lines <$> readFile "./src/inputs/day02.txt"
-  print $ solve1 $ calculatePosition content (0, 0)
-  print $ solve2 $ calculatePosition2 content (0, 0, 0)
+  -- solution 1
+  print $ solve $ mconcat $ map commandToPosition content
+  -- solution 2
+  print $ solve $ mconcat $ map commandToPosition' content
