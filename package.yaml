@@ -21,6 +21,8 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- parsec
+- split
 
 library:
   source-dirs: src
@@ -36,6 +38,7 @@ executables:
     dependencies:
     - aoc2021
     - parsec
+    - split
 
 tests:
   aoc2021-test:
@@ -48,3 +51,4 @@ tests:
     dependencies:
     - aoc2021
     - parsec
+    - split
