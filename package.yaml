@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - parsec
 - split
+- containers
 
 library:
   source-dirs: src
@@ -39,6 +40,7 @@ executables:
     - aoc2021
     - parsec
     - split
+    - containers
 
 tests:
   aoc2021-test:
@@ -52,3 +54,4 @@ tests:
     - aoc2021
     - parsec
     - split
+    - containers
