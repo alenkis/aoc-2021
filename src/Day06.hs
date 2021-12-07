@@ -29,7 +29,10 @@ solveForDays days initial = solveForDays (days - 1) (updateFish $ rotateList ini
 day06 :: IO ()
 day06 = do
   initialFrequency <- frequencyList . parseNumbers <$> readFile "./src/inputs/day06.txt"
+  -- part 1
   print $ sum $ solveForDays 80 initialFrequency
+  -- part 2
+  print $ sum $ solveForDays 256 initialFrequency
 
 parseNumbers :: String -> [Int]
 parseNumbers = map read . splitOn ","
