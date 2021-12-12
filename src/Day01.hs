@@ -19,12 +19,6 @@ rollingMeasurement input = map fn $ zip3 (tail . tail $ input) (tail input) inpu
   where
     fn (f, s, t) = f + s + t
 
-rollingMeasurement' :: [Int] -> [Int]
-rollingMeasurement' input = map fn $ windows 3 input
-  where
-    fn [f, s, t] = f + s + t
-    fn _ = 0
-
 day01 :: IO ()
 day01 = do
   input <- map read . lines <$> readFile "./src/inputs/day01.txt"
