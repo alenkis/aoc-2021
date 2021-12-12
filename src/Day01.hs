@@ -7,7 +7,7 @@ windows :: Int -> [a] -> [[a]]
 windows n = getZipList . traverse ZipList . take n . tails
 
 countIncreases :: [Int] -> Int
-countIncreases input = (sum . map fn) (windows 2 input)
+countIncreases = sum . map fn . windows 2
   where
     fn [f, s]
       | s > f = 1
@@ -15,9 +15,7 @@ countIncreases input = (sum . map fn) (windows 2 input)
     fn _ = 0
 
 rollingMeasurement :: [Int] -> [Int]
-rollingMeasurement input = map fn $ zip3 (tail . tail $ input) (tail input) input
-  where
-    fn (f, s, t) = f + s + t
+rollingMeasurement = map sum . windows 3
 
 day01 :: IO ()
 day01 = do
